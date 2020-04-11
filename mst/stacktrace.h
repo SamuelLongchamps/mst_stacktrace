@@ -30,7 +30,7 @@ namespace mst
 }
 
 #if defined(MST_STACKTRACE_WIN)
-    #include "stacktrace.win32.inl"
+    #include "stacktrace.win.inl"
 #elif defined(MST_STACKTRACE_LINUX)
     #include "stacktrace.linux.inl"
 #elif defined(MST_STACKTRACE_APPLE)
