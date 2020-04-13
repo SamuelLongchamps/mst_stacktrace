@@ -15,5 +15,6 @@ namespace mst::priv {
         constexpr const char* NC = "\e[0m";
     }
 
-    constexpr const int FRAME_ALLOC_SIZE = 128;
+    constexpr const int FRAME_ALLOC_SIZE = 64;
+    constexpr const int NAME_BUFFER_SIZE = 255;
 }
