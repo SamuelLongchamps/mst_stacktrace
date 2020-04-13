@@ -31,4 +31,4 @@ In the absence of debug information, only the function names will be printed.
 
 * [Backward](https://github.com/bombela/backward-cpp)
 * [Boost Stacktrace](https://github.com/boostorg/stacktrace)
-* [Chromium Stacktrace](hhttps://github.com/chromium/chromium/tree/master/base/debug)
+* [Chromium Stacktrace](https://github.com/chromium/chromium/tree/master/base/debug)
