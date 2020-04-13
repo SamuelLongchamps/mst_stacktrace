@@ -171,11 +171,11 @@ void print_stacktrace(std::FILE* fd, const stacktrace_t& st)
     using namespace mst::priv;
 
     // We skip the first frame and the two lasts ones:
-    // * 1st is this file's AcquireStackTrace function
-    // * 2 last frames are before __libc_start_main
+    // * 1st is acquire_stacktrace
+    // * 3 last frames are before main
     const std::size_t size = std::min(
-        stacktrace.frames.size(),
-        stacktrace.frames.size() - 2
+        st.frames.size(),
+        st.frames.size() - 3
     );
 
     for (std::size_t i = 1; i < size; ++i)
