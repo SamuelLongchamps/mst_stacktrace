@@ -53,7 +53,7 @@ inline std::string demangle(const char* name)
     return result;
 }
 
-frame_content_t parse(frame_t in_address)
+frame_content_t parse(frame_t address)
 {
     // Support only the calling thread and set a local value
     backtrace_state* state = backtrace_create_state(
@@ -67,7 +67,7 @@ frame_content_t parse(frame_t in_address)
     {
         // Simple fallback
         Dl_info info;
-        return dladdr(in_address, &info) != 0 && info.dli_sname ?
+        return dladdr(address, &info) != 0 && info.dli_sname ?
             frame_content_t { demangle(info.dli_sname) } :
             frame_content_t{};
     }
@@ -76,7 +76,7 @@ frame_content_t parse(frame_t in_address)
     data_t data;
     backtrace_pcinfo(
         state,
-        reinterpret_cast<uintptr_t>(in_address),
+        reinterpret_cast<uintptr_t>(address),
         [](void *data, uintptr_t, const char *filename, int lineno, const char *function) -> int {
             // We have at least some data
             if (function || filename || lineno != 0)
@@ -96,7 +96,7 @@ frame_content_t parse(frame_t in_address)
     ||
     backtrace_syminfo(
         state,
-        reinterpret_cast<uintptr_t>(in_address),
+        reinterpret_cast<uintptr_t>(address),
         [](void *data, uintptr_t, const char *symname, uintptr_t, uintptr_t) {
             if (symname)
             {
@@ -166,7 +166,7 @@ void acquire_stacktrace(stacktrace_t& st)
     }, &st);
 }
 
-void print_stacktrace(std::FILE* fd, const stacktrace_t& stacktrace)
+void print_stacktrace(std::FILE* fd, const stacktrace_t& st)
 {
     using namespace mst::priv;
 
@@ -182,7 +182,7 @@ void print_stacktrace(std::FILE* fd, const stacktrace_t& stacktrace)
     {
        print_frame_content(
            fd,
-           parse(stacktrace.frames[i]),
+           parse(st.frames[i]),
            i == 1 ? "=>" : "^^" // Indicate the direction of the stackframe
         );
     }

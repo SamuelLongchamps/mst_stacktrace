@@ -56,10 +56,10 @@ inline std::string demangle(const char* name)
     return result;
 }
 
-frame_content_t parse(frame_t in_address)
+frame_content_t parse(frame_t address)
 {
     Dl_info info;
-    if (dladdr(in_address, &info) != 0 && info.dli_sname)
+    if (dladdr(address, &info) != 0 && info.dli_sname)
     {
         std::FILE* pipe = nullptr;
 
@@ -159,16 +159,16 @@ void acquire_stacktrace(stacktrace_t& st)
     }, &st);
 }
 
-void print_stacktrace(std::FILE* fd, const stacktrace_t& stacktrace)
+void print_stacktrace(std::FILE* fd, const stacktrace_t& st)
 {
     using namespace mst::priv;
 
     // We skip the first frame to reach up to acquire_stackframe's caller only
-    for (std::size_t i = 1; i < stacktrace.frames.size(); ++i)
+    for (std::size_t i = 1; i < st.frames.size(); ++i)
     {
        print_frame_content(
            fd,
-           parse(stacktrace.frames[i]),
+           parse(st.frames[i]),
            i == 1 ? "=>" : "^^" // Indicate the direction of the stackframe
         );
     }
